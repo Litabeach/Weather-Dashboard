@@ -1,0 +1,17 @@
+h1 {
+    background-color:rgb(56, 56, 70);
+    color: white;
+    text-align: center;
+}
+
+
+.btn-primary {
+    margin-left: 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.form-group {
+    margin: 20px;
+    font-weight: bold;
+}
