@@ -1,7 +1,7 @@
 
 inputDiv = $("enter-city")
 
-var cities = [""];
+var cities = [];
 
 function renderCities(){
     $("#cities-buttons").empty();
@@ -11,9 +11,10 @@ function renderCities(){
         button.attr("data-name", cities[i]);
         button.text(cities[i]);
         $("#cities-buttons").append(button)
+        
     }
+    
 }
-
 
 
 $("#search").on("click", function (event) {
