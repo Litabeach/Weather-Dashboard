@@ -27,12 +27,13 @@ function showOneDay(city) {
         method: "GET"
     })
         .then(function (response) {
+            console.log(response);
             var weatherCity = response.name;
             var weatherDate = new Date(response.dt * 1000).toString();
             var weatherIcon = "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png";
-            // var weatherTemp = response.list.main.temp;
-            // var weatherHumidity = response.list.main.humidity;
-            // var weatherWindspeed = response.list.wind.speed;
+            var weatherTemp = response.main.temp;
+            var weatherHumidity = response.main.humidity;
+            var weatherWindspeed = response.wind.speed;
             // var weatherUVIndex = response.???? will need to use lat and lon  response.city.coord.lat, .lon
 
             // one day weather div
@@ -50,11 +51,22 @@ function showOneDay(city) {
             var weatherIconEl = $("<img>");
             weatherIconEl.attr("src", weatherIcon);
             
+            var weatherTempEl = $("<p>");
+            weatherTempEl.html(weatherTemp);
+
+            var weatherHumidityEl = $("<p>");
+            weatherHumidityEl.html(weatherHumidity);
+
+            var weatherWindspeedEl = $("<p>");
+            weatherWindspeedEl.html(weatherWindspeed);
 
             // weatherCityEl.append(weatherIconEl);
             oneDayDiv.append(weatherCityEl);
             oneDayDiv.append(weatherDateEl);
             oneDayDiv.append(weatherIconEl);
+            oneDayDiv.append(weatherTempEl);
+            oneDayDiv.append(weatherHumidityEl);
+            oneDayDiv.append(weatherWindspeedEl);
 
             $("#todayWeather").append(oneDayDiv);
         });
