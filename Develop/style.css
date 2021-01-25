@@ -4,7 +4,7 @@ h1 {
     text-align: center;
 }
 
-body{
+.container{
     background-color: lightgray;
 }
 
@@ -42,4 +42,23 @@ body{
     background-color: rgb(86, 86, 196);
     color: white;
     margin-left: 100px;
+    border: solid white;
+}
+
+.box{
+    height:15px;
+    width: 15px;
+
+}
+
+.green{
+    background-color: green;
+}
+
+.yellow{
+    background-color: yellow;
+}
+
+.red{
+    background-color: red;
 }

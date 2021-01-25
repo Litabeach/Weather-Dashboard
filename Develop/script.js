@@ -6,9 +6,7 @@ var cities = [];
 function renderCities() {
     $("#cities-buttons").empty();
     $("#todayWeather").empty();
-    $("#5dayWeather").empty();
-    var h2Element = $("<h2>")
-    h2Element = "Five Day Forecast"
+    $("#fiveDayWeather").empty();
     for (var i = 0; i < cities.length; i++) {
         var button = $("<button>");
         button.attr("class", "city");
@@ -19,7 +17,6 @@ function renderCities() {
             showFiveDay(cities[i])
         });
         $("#cities-buttons").append(button);
-        $("#fiveDayWeather").append(h2Element)
     }
 }
 
@@ -42,7 +39,17 @@ function showOneDay(city) {
             var weatherTemp = Math.round(weatherTempF);
             var weatherHumidity = response.main.humidity;
             var weatherWindspeed = response.wind.speed;
-            // var weatherUVIndex = response.???? will need to use lat and lon  response.city.coord.lat, .lon
+            // UV index pull lat and long
+            var lat = response.coord.lat;
+            var lon = response.coord.lon;
+            var queryURL = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=ec56ab5d5bd61e4c7ba5abb45ce5cb1a";
+
+                $.ajax({
+                    url: queryURL,
+                    method: "GET"
+                })
+                    .then(function (UVresponse) {
+                        var UVIndex = UVresponse.value
 
             // one day weather div
             var oneDayDiv = $("<div class='oneDay'>");
@@ -71,14 +78,33 @@ function showOneDay(city) {
             var weatherWindspeedEl = $("<p>");
             weatherWindspeedEl.html("Windspeed: " + weatherWindspeed + "kph");
 
+            //UV index
+
+            // if (currentHour == timeBlock.dataHour) {
+            // $(inputDiv).attr("class", "present col-10")
+
+            var UVIndexEl = $("<p>");
+            UVIndexEl.html("UV Index: " + UVIndex);
+            if (UVIndex < 2){
+                UVIndexEl.addClass("box green")
+            };
+            if (UVIndex >= 2 && UVIndex < 5){
+                UVIndexEl.addClass("box yellow")
+            };
+            if (UVIndex >= 5){
+                UVIndexEl.addClass("box red")
+            };
+
             oneDayDiv.append(weatherCityEl);
             oneDayDiv.append(weatherDateEl);
             oneDayDiv.append(weatherIconEl);
             oneDayDiv.append(weatherTempEl);
             oneDayDiv.append(weatherHumidityEl);
             oneDayDiv.append(weatherWindspeedEl);
+            oneDayDiv.append(UVIndexEl);
 
             $("#todayWeather").append(oneDayDiv);
+        });
         });
 
 }
@@ -134,7 +160,7 @@ function showFiveDay(city) {
                     fiveDayDiv.append(humidityEl);
 
                     $("#fiveDayWeather").append(fiveDayDiv);
-                    
+
 
 
                 }
