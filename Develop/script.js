@@ -6,6 +6,7 @@ var cities = [];
 function renderCities() {
     $("#cities-buttons").empty();
     $("#todayWeather").empty();
+    $("#5dayWeather").empty();
     for (var i = 0; i < cities.length; i++) {
         var button = $("<button>");
         button.attr("class", "city");
@@ -89,21 +90,52 @@ function showFiveDay(city) {
     })
         .then(function (forecast) {
             console.log(forecast);
-            
+            //function that runs through the list of items in the forecast
             for (var i = 0; i < forecast.cnt; i++) {
                 var forecastResponse = forecast.list[i];
-                // console.log(forecastResponse);
-                // console.log(i);
                 var responseDate = moment(forecastResponse.dt_txt);
-                // console.log(responseDate)
-       
+                // checks to see if it is noon, if it is, get these data:
                 if (parseInt(responseDate.format("HH")) == 12) {
-                    // console.log("hello")
-    
-                    }
+                    var date = forecast.list[i].dt_txt;
+                    var icon = "http://openweathermap.org/img/w/" + forecast.list[i].weather.icon + ".png";
+                    var tempK = forecast.list[i].main.temp;
+                    var temp = (tempK - 273.15) * 1.80 + 32;
+                    var tempF = Math.round(temp);
+                    var humidity = forecast.list[i].main.humidity;
+                    // create a div for them to live in
+                    var fiveDayDiv = $("<div class='fiveDay'>");
+                    // create elements for them:
+                    // date
+                    var dateEl = $("<p>");
+                    dateEl.html(date);
+
+                    // icon
+                    var iconEl = $("<img>");
+                    iconEl.attr("src", icon);
+
+                    console.log(iconEl)
+
+                    // temp
+                    var tempEl = $("<p>");
+                    tempEl.html("Temp: " + tempF + "°F");
+
+                    // humidity
+                    var humidityEl = $("<p>");
+                    humidityEl.html("Humidity: " + humidity + "%");
+
+                    // add them to the page
+                    fiveDayDiv.append(dateEl);
+                    fiveDayDiv.append(iconEl);
+                    fiveDayDiv.append(tempEl);
+                    fiveDayDiv.append(humidityEl);
+
+                    $("#5dayWeather").append(fiveDayDiv);
+
+
+                }
 
             }
-            });
+        });
 
 }
 
