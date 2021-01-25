@@ -95,15 +95,15 @@ function showFiveDay(city) {
                 // console.log(forecastResponse);
                 // console.log(i);
                 var responseDate = moment(forecastResponse.dt_txt);
-                console.log(responseDate)
-        }
+                // console.log(responseDate)
+       
                 if (parseInt(responseDate.format("HH")) == 12) {
-
-                   alert("hello!")
+                    // console.log("hello")
     
                     }
 
-                });
+            }
+            });
 
 }
 
