@@ -1,5 +1,5 @@
+// JSON.parse(localStorage.getItem("lastCity")) ||  <---- add this in front of  [] in cities? 
 
-// inputDiv = $("enter-city")
 var cities = [];
 
 // function that renders city buttons with class of city and data attribute "name"
@@ -104,6 +104,7 @@ function showOneDay(city) {
             oneDayDiv.append(UVIndexEl);
 
             $("#todayWeather").append(oneDayDiv);
+            localStorage.setItem("lastCity", JSON.stringify(oneDayDiv))
         });
         });
 
@@ -160,8 +161,7 @@ function showFiveDay(city) {
                     fiveDayDiv.append(humidityEl);
 
                     $("#fiveDayWeather").append(fiveDayDiv);
-
-
+                    localStorage.setItem("lastCity", JSON.stringify(fiveDayDiv))
 
                 }
 
@@ -169,32 +169,6 @@ function showFiveDay(city) {
         });
 
 }
-
-
-// function showFiveDay(city) {
-//     var queryURL5 = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=ec56ab5d5bd61e4c7ba5abb45ce5cb1a";
-
-//     $.ajax({
-//         url: queryURL5,
-//         method: "GET"
-//     })
-//         .then(function (forecast) {
-//             console.log(forecast);
-//             for (var i = 0; i < forecast.cnt; i ++) {
-//                 var forecastResponse = forecast.list[i]
-//                 // console.log(forecastResponse);
-//                 // console.log(i);
-//                 var responseDate = moment(forecastResponse.dt_txt);
-//                 if (parseInt(responseDate.format("HH")) == 12){
-
-//                  $("#5dayWeather).append(fiveDayDiv);
-
-//                 }
-//         });
-
-// }
-
-
 
 // on-click  event that takes what the user has input into the #enter-city and
 // then creates a button below the search for it.
@@ -206,7 +180,12 @@ $("#search").on("click", function (event) {
     showOneDay(city);
     showFiveDay(city);
 
-    // on-click event that when used presses one of the created buttons, weather data is shown.
-    // $(document).on("click", ".city", showOneDay)
 });
+
+// on-click event that when used presses one of the created buttons, weather data is shown.
+    // $(document).on("click", ".city", showOneDay)
+    // $(document).on("click", ".city", showFiveDay)
+
+
+
 
