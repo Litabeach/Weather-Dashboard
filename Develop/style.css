@@ -4,6 +4,9 @@ h1 {
     text-align: center;
 }
 
+body{
+    background-color: lightgray;
+}
 
 .btn-primary {
     margin-left: 20px;
@@ -30,9 +33,13 @@ h1 {
 
 .weather{
     float: right;
-    color:rgb(56, 56, 70)
+    color:rgb(56, 56, 70);
+    border-style: solid rgb(56, 56, 70);
 }
 
-#todayWeather{
-    border-style: solid rgb(56, 56, 70)
+
+#fiveDayWeather{
+    background-color: rgb(86, 86, 196);
+    color: white;
+    margin-left: 100px;
 }

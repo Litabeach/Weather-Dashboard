@@ -7,6 +7,8 @@ function renderCities() {
     $("#cities-buttons").empty();
     $("#todayWeather").empty();
     $("#5dayWeather").empty();
+    var h2Element = $("<h2>")
+    h2Element = "Five Day Forecast"
     for (var i = 0; i < cities.length; i++) {
         var button = $("<button>");
         button.attr("class", "city");
@@ -14,9 +16,10 @@ function renderCities() {
         button.text(cities[i]);
         button.click(() => {
             showOneDay(cities[i]);
-            // showFiveDay(cities[i])
+            showFiveDay(cities[i])
         });
         $("#cities-buttons").append(button);
+        $("#fiveDayWeather").append(h2Element)
     }
 }
 
@@ -81,6 +84,7 @@ function showOneDay(city) {
 }
 
 function showFiveDay(city) {
+
     // URL with API Key
     var queryURL5 = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=ec56ab5d5bd61e4c7ba5abb45ce5cb1a";
 
@@ -97,7 +101,7 @@ function showFiveDay(city) {
                 // checks to see if it is noon, if it is, get these data:
                 if (parseInt(responseDate.format("HH")) == 12) {
                     var date = forecast.list[i].dt_txt;
-                    var icon = "http://openweathermap.org/img/w/" + forecast.list[i].weather.icon + ".png";
+                    var icon = "http://openweathermap.org/img/w/" + forecast.list[i].weather[0].icon + ".png";
                     var tempK = forecast.list[i].main.temp;
                     var temp = (tempK - 273.15) * 1.80 + 32;
                     var tempF = Math.round(temp);
@@ -129,7 +133,8 @@ function showFiveDay(city) {
                     fiveDayDiv.append(tempEl);
                     fiveDayDiv.append(humidityEl);
 
-                    $("#5dayWeather").append(fiveDayDiv);
+                    $("#fiveDayWeather").append(fiveDayDiv);
+                    
 
 
                 }
