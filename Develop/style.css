@@ -22,3 +22,8 @@ h1 {
     margin-top: 10px;
     display: block;
 }
+
+.weather{
+    float: right;
+    color:rgb(56, 56, 70)
+}
