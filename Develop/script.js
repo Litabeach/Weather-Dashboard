@@ -38,7 +38,9 @@ function showOneDay(city) {
             var weatherTempF = (weatherTempK - 273.15) * 1.80 + 32;
             var weatherTemp = Math.round(weatherTempF);
             var weatherHumidity = response.main.humidity;
-            var weatherWindspeed = response.wind.speed;
+            var weatherWindspeedk = response.wind.speed;
+            var weatherWindspeedm = weatherWindspeedk * 0.621371
+            var weatherWindspeed = Math.round(weatherWindspeedm);
             // UV index pull lat and long
             var lat = response.coord.lat;
             var lon = response.coord.lon;
@@ -76,13 +78,9 @@ function showOneDay(city) {
 
             // windspeed
             var weatherWindspeedEl = $("<p>");
-            weatherWindspeedEl.html("Windspeed: " + weatherWindspeed + "kph");
+            weatherWindspeedEl.html("Windspeed: " + weatherWindspeed + "mph");
 
             //UV index
-
-            // if (currentHour == timeBlock.dataHour) {
-            // $(inputDiv).attr("class", "present col-10")
-
             var UVIndexEl = $("<p>");
             UVIndexEl.html("UV Index: " + UVIndex);
             if (UVIndex < 2){
@@ -144,8 +142,6 @@ function showFiveDay(city) {
                     var iconEl = $("<img>");
                     iconEl.attr("src", icon);
 
-                    console.log(iconEl)
-
                     // temp
                     var tempEl = $("<p>");
                     tempEl.html("Temp: " + tempF + "°F");
@@ -154,11 +150,14 @@ function showFiveDay(city) {
                     var humidityEl = $("<p>");
                     humidityEl.html("Humidity: " + humidity + "%");
 
+                    var breakEl = $("<br>");
+
                     // add them to the page
                     fiveDayDiv.append(dateEl);
                     fiveDayDiv.append(iconEl);
                     fiveDayDiv.append(tempEl);
                     fiveDayDiv.append(humidityEl);
+                    fiveDayDiv.append(breakEl);
 
                     $("#fiveDayWeather").append(fiveDayDiv);
                     localStorage.setItem("lastCity", JSON.stringify(fiveDayDiv))
@@ -174,6 +173,7 @@ function showFiveDay(city) {
 // then creates a button below the search for it.
 $("#search").on("click", function (event) {
     event.preventDefault();
+    $("h3").removeClass("hide");
     var city = $("#enter-city").val().trim();
     cities.push(city);
     renderCities();
@@ -183,8 +183,8 @@ $("#search").on("click", function (event) {
 });
 
 // on-click event that when used presses one of the created buttons, weather data is shown.
-    // $(document).on("click", ".city", showOneDay)
-    // $(document).on("click", ".city", showFiveDay)
+    // $(document).on("click", ".city", showOneDay(cities[i]))
+    // $(document).on("click", ".city", showFiveDay(cities[i]))
 
 
 

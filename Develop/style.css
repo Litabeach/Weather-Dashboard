@@ -1,11 +1,16 @@
+.body {
+    background-color: lightgray;
+}
+
 h1 {
     background-color:rgb(56, 56, 70);
     color: white;
     text-align: center;
 }
 
-.container{
-    background-color: lightgray;
+h3 {
+    color:  rgb(56, 56, 70);
+    text-align: center;
 }
 
 .btn-primary {
@@ -39,15 +44,20 @@ h1 {
 
 
 #fiveDayWeather{
-    background-color: rgb(86, 86, 196);
+    background-color: rgb(80, 80, 122);
     color: white;
     margin-left: 100px;
     border: solid white;
+    display:block;
+}
+
+.hide{
+display: none;
 }
 
 .box{
-    height:15px;
-    width: 15px;
+    height:50px;
+    width: 100px;
 
 }
 
