@@ -20,7 +20,7 @@ h3 {
 }
 
 .form-group {
-    margin: 20px;
+    /* margin: 20px; */
     font-weight: bold;
 }
 
@@ -36,16 +36,18 @@ h3 {
     font-size: 16px;
 }
 
-.weather{
-    float: right;
+.oneDay{
     color:rgb(56, 56, 70);
     border-style: solid rgb(56, 56, 70);
+    font-size: large;
+    text-align:center;
+    margin:30px;
 }
 
-
-#fiveDayWeather{
+.fiveDay{
     background-color: rgb(80, 80, 122);
-    color: white;    
+    color: white;  
+    margin: 10px;
 }
 
 .hide{
@@ -53,9 +55,9 @@ display: none;
 }
 
 .box{
-    height:15px;
+    height: 15px;
     width: 15px;
-
+    margin: auto;
 }
 
 .green{
@@ -70,6 +72,7 @@ display: none;
     background-color: red;
 }
 
-/* .block {
-    display: inline block;
-} */
+.purple{
+    background-color:purple;
+}
+

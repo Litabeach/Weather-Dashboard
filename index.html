@@ -14,20 +14,18 @@
   <div class="container fluid">
     <div class="row">
       <form>
-        <div class="form-group">
+        <div class="form-group col">
           <label for="search">Search for a city: </label>
           <input class="form-control" id="enter-city" placeholder="Enter city">
         </div>
         <button type="submit" class="btn btn-primary" id="search">Search</button>
+        <div id="cities-buttons"></div>
       </form>
-      <div id="todayWeather" class="col-sm-7 weather"></div>
-      
+      <div id="todayWeather" class="col-sm fluid"></div>
     </div>
-
-    <div id="cities-buttons"></div>
     
     <h3 class="hide">Five Day Forecast</h3>
-      <div class="row" id="fiveDayWeather"></div>
+      <div class="row " id="fiveDayWeather"></div>
   </div>
 
 
