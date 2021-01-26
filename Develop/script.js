@@ -1,8 +1,6 @@
-// JSON.parse(localStorage.getItem("lastCity")) ||  <---- add this in front of  [] in cities? 
+var cities = JSON.parse(localStorage.getItem("cities")) || [];
 
-var cities = [];
-
-// function that renders city buttons with class of city and data attribute "name"
+// function that renders city buttons with class of city and data attribute "name", adds an on-click to run weather functions those buttons
 function renderCities() {
     $("#cities-buttons").empty();
     $("#todayWeather").empty();
@@ -12,9 +10,11 @@ function renderCities() {
         button.attr("class", "city");
         button.attr("data-name", cities[i]);
         button.text(cities[i]);
-        button.click(() => {
-            showOneDay(cities[i]);
-            showFiveDay(cities[i])
+        button.click(function() {
+            $("#todayWeather").empty();
+            $("#fiveDayWeather").empty();
+            showOneDay($(this).attr("data-name"));
+            showFiveDay($(this).attr("data-name"));
         });
         $("#cities-buttons").append(button);
     }
@@ -32,14 +32,16 @@ function showOneDay(city) {
 
             console.log(response);
             var weatherCity = response.name;
-            var weatherDate = new Date(response.dt * 1000).toString();
+            // var weatherDate = new Date(response.dt * 1000).toString();
+            var weatherDate = moment().format("dddd MMM Do YYYY")
             var weatherIcon = "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png";
             var weatherTempK = response.main.temp;
             var weatherTempF = (weatherTempK - 273.15) * 1.80 + 32;
             var weatherTemp = Math.round(weatherTempF);
             var weatherHumidity = response.main.humidity;
             var weatherWindspeedk = response.wind.speed;
-            var weatherWindspeedm = weatherWindspeedk * 0.621371
+            //convert meters per second to miles per hour
+            var weatherWindspeedm = weatherWindspeedk * 2.23694
             var weatherWindspeed = Math.round(weatherWindspeedm);
             // UV index pull lat and long
             var lat = response.coord.lat;
@@ -80,17 +82,17 @@ function showOneDay(city) {
             var weatherWindspeedEl = $("<p>");
             weatherWindspeedEl.html("Windspeed: " + weatherWindspeed + "mph");
 
-            //UV index
+            //UV index with conditional statement that changes the color of the appended box depending on UV #
             var UVIndexEl = $("<p>");
             UVIndexEl.html("UV Index: " + UVIndex);
             if (UVIndex < 2){
-                UVIndexEl.addClass("box green")
+                UVIndexEl.append($("<div class='box green'>"))
             };
             if (UVIndex >= 2 && UVIndex < 5){
-                UVIndexEl.addClass("box yellow")
+                UVIndexEl.append($("<div class='box yellow'>"))
             };
             if (UVIndex >= 5){
-                UVIndexEl.addClass("box red")
+                UVIndexEl.append($("<div class='box red'>"))
             };
 
             oneDayDiv.append(weatherCityEl);
@@ -125,14 +127,14 @@ function showFiveDay(city) {
                 var responseDate = moment(forecastResponse.dt_txt);
                 // checks to see if it is noon, if it is, get these data:
                 if (parseInt(responseDate.format("HH")) == 12) {
-                    var date = forecast.list[i].dt_txt;
+                    var date = forecast.list[i].dt_txt.substring(0, 10);
                     var icon = "http://openweathermap.org/img/w/" + forecast.list[i].weather[0].icon + ".png";
                     var tempK = forecast.list[i].main.temp;
                     var temp = (tempK - 273.15) * 1.80 + 32;
                     var tempF = Math.round(temp);
                     var humidity = forecast.list[i].main.humidity;
                     // create a div for them to live in
-                    var fiveDayDiv = $("<div class='fiveDay'>");
+                    var fiveDayDiv = $("<div class='fiveDay col'>");
                     // create elements for them:
                     // date
                     var dateEl = $("<p>");
@@ -149,18 +151,16 @@ function showFiveDay(city) {
                     // humidity
                     var humidityEl = $("<p>");
                     humidityEl.html("Humidity: " + humidity + "%");
-
-                    var breakEl = $("<br>");
+                    // add a style to the last one that breaks up the respoonses?
+                    // humidityEl.css("display", "inline block");
 
                     // add them to the page
                     fiveDayDiv.append(dateEl);
                     fiveDayDiv.append(iconEl);
                     fiveDayDiv.append(tempEl);
                     fiveDayDiv.append(humidityEl);
-                    fiveDayDiv.append(breakEl);
 
                     $("#fiveDayWeather").append(fiveDayDiv);
-                    localStorage.setItem("lastCity", JSON.stringify(fiveDayDiv))
 
                 }
 
@@ -173,18 +173,17 @@ function showFiveDay(city) {
 // then creates a button below the search for it.
 $("#search").on("click", function (event) {
     event.preventDefault();
-    $("h3").removeClass("hide");
     var city = $("#enter-city").val().trim();
+    if(city){
     cities.push(city);
     renderCities();
     showOneDay(city);
     showFiveDay(city);
-
+    $("h3").removeClass("hide");
+    localStorage.setItem("cities", JSON.stringify(cities))
+    }
 });
-
-// on-click event that when used presses one of the created buttons, weather data is shown.
-    // $(document).on("click", ".city", showOneDay(cities[i]))
-    // $(document).on("click", ".city", showFiveDay(cities[i]))
+renderCities();
 
 
 

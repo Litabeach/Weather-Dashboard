@@ -45,10 +45,7 @@ h3 {
 
 #fiveDayWeather{
     background-color: rgb(80, 80, 122);
-    color: white;
-    margin-left: 100px;
-    border: solid white;
-    display:block;
+    color: white;    
 }
 
 .hide{
@@ -56,8 +53,8 @@ display: none;
 }
 
 .box{
-    height:50px;
-    width: 100px;
+    height:15px;
+    width: 15px;
 
 }
 
@@ -72,3 +69,7 @@ display: none;
 .red{
     background-color: red;
 }
+
+/* .block {
+    display: inline block;
+} */
