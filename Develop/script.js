@@ -1,6 +1,13 @@
 // pulls city buttons from local storage
 var cities = JSON.parse(localStorage.getItem("cities")) || [];
 
+var lastCity = JSON.parse(localStorage.getItem("last-city"));
+if (lastCity) {
+    showOneDay(lastCity);
+    showFiveDay(lastCity);
+}
+
+
 // function that renders city buttons with class of city and data attribute "name", adds an on-click to run weather functions those buttons
 function renderCities() {
     $("#cities-buttons").empty();
@@ -11,7 +18,7 @@ function renderCities() {
         button.attr("class", "city");
         button.attr("data-name", cities[i]);
         button.text(cities[i]);
-        button.click(function(event) {
+        button.click(function (event) {
             event.preventDefault()
             $("#todayWeather").empty();
             $("#fiveDayWeather").empty();
@@ -30,9 +37,14 @@ function showOneDay(city) {
 
     $.ajax({
         url: queryURL,
-        method: "GET"
-    })
-        .then(function (response) {
+        method: "GET",
+        // throws an error message if they don't write in a city
+        error: function(xhr, status, error){
+            var errorMessage = xhr.status + ': ' + xhr.statusText
+            alert('Error - ' + errorMessage);
+            $("h3").addClass("hide");
+        },
+        success: function (response) {
             //traverse the weather object to select the appropiate items and set them to new variables
             var weatherCity = response.name;
             var weatherDate = new Date(response.dt * 1000).toString().substring(0, 15);
@@ -54,68 +66,70 @@ function showOneDay(city) {
             //An AJAX call to pull the UV index using the lat and lon from 50 and 51
             var queryURL = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=ec56ab5d5bd61e4c7ba5abb45ce5cb1a";
 
-                $.ajax({
-                    url: queryURL,
-                    method: "GET"
-                })
-                    .then(function (UVresponse) {
-                        var UVIndex = UVresponse.value
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            })
+                .then(function (UVresponse) {
+                    var UVIndex = UVresponse.value
 
-            // one day weather div
-            var oneDayDiv = $("<div class='oneDay'>");
+                    // one day weather div
+                    var oneDayDiv = $("<div class='oneDay'>");
 
-            // city
-            var weatherCityEl = $("<h3>");
-            weatherCityEl.html(weatherCity);
+                    // city
+                    var weatherCityEl = $("<h3>");
+                    weatherCityEl.html(weatherCity);
 
-            // date
-            var weatherDateEl = $("<p>");
-            weatherDateEl.html(weatherDate);
+                    // date
+                    var weatherDateEl = $("<p>");
+                    weatherDateEl.html(weatherDate);
 
-            // icon
-            var weatherIconEl = $("<img>");
-            weatherIconEl.attr("src", weatherIcon);
+                    // icon
+                    var weatherIconEl = $("<img>");
+                    weatherIconEl.attr("src", weatherIcon);
 
-            // temp
-            var weatherTempEl = $("<p>");
-            weatherTempEl.html("Temp: " + weatherTemp + "°F");
+                    // temp
+                    var weatherTempEl = $("<p>");
+                    weatherTempEl.html("Temp: " + weatherTemp + "°F");
 
-            // humidity
-            var weatherHumidityEl = $("<p>");
-            weatherHumidityEl.html("Humidity: " + weatherHumidity + "%");
+                    // humidity
+                    var weatherHumidityEl = $("<p>");
+                    weatherHumidityEl.html("Humidity: " + weatherHumidity + "%");
 
-            // windspeed
-            var weatherWindspeedEl = $("<p>");
-            weatherWindspeedEl.html("Windspeed: " + weatherWindspeed + " mph");
+                    // windspeed
+                    var weatherWindspeedEl = $("<p>");
+                    weatherWindspeedEl.html("Windspeed: " + weatherWindspeed + " mph");
 
-            //UV index with conditional statement that changes the color of the appended box depending on UV #
-            var UVIndexEl = $("<p>");
-            UVIndexEl.html("UV Index: " + UVIndex);
-            if (UVIndex < 2){
-                UVIndexEl.append($("<div class='box green'>"))
-            };
-            if (UVIndex >= 2 && UVIndex < 5){
-                UVIndexEl.append($("<div class='box yellow'>"))
-            };
-            if (UVIndex >= 5 && UVIndex < 8){
-                UVIndexEl.append($("<div class='box red'>"))
-            };
-            if (UVIndex >= 8){
-                UVIndexEl.append($("<div class='box purple'>"))
-            };
+                    //UV index with conditional statement that changes the color of the appended box depending on UV #
+                    var UVIndexEl = $("<p>");
+                    UVIndexEl.html("UV Index: " + UVIndex);
+                    if (UVIndex < 2) {
+                        UVIndexEl.append($("<div class='box green'>"))
+                    };
+                    if (UVIndex >= 2 && UVIndex < 5) {
+                        UVIndexEl.append($("<div class='box yellow'>"))
+                    };
+                    if (UVIndex >= 5 && UVIndex < 8) {
+                        UVIndexEl.append($("<div class='box red'>"))
+                    };
+                    if (UVIndex >= 8) {
+                        UVIndexEl.append($("<div class='box purple'>"))
+                    };
 
-            oneDayDiv.append(weatherCityEl);
-            oneDayDiv.append(weatherDateEl);
-            oneDayDiv.append(weatherIconEl);
-            oneDayDiv.append(weatherTempEl);
-            oneDayDiv.append(weatherHumidityEl);
-            oneDayDiv.append(weatherWindspeedEl);
-            oneDayDiv.append(UVIndexEl);
+                    oneDayDiv.append(weatherCityEl);
+                    oneDayDiv.append(weatherDateEl);
+                    oneDayDiv.append(weatherIconEl);
+                    oneDayDiv.append(weatherTempEl);
+                    oneDayDiv.append(weatherHumidityEl);
+                    oneDayDiv.append(weatherWindspeedEl);
+                    oneDayDiv.append(UVIndexEl);
 
-            $("#todayWeather").append(oneDayDiv);
-            // localStorage.setItem("lastCity", JSON.stringify(oneDayDiv))
-        });
-        });
+                    $("#todayWeather").append(oneDayDiv);
+                    // localStorage.setItem("lastCity", JSON.stringify(oneDayDiv))
+                });
+        }
+    })
+        ;
 
 }
 
@@ -128,6 +142,7 @@ function showFiveDay(city) {
     $.ajax({
         url: queryURL5,
         method: "GET"
+
     })
         .then(function (forecast) {
             console.log(forecast);
@@ -179,20 +194,16 @@ function showFiveDay(city) {
 $("#search").on("click", function (event) {
     event.preventDefault();
     var city = $("#enter-city").val().trim();
-    if(city){
-    cities.push(city);
-    renderCities();
-    showOneDay(city);
-    showFiveDay(city);
-    $("h3").removeClass("hide");
-    localStorage.setItem("cities", JSON.stringify(cities))
+    if (city) {
+        cities.push(city);
+        renderCities();
+        showOneDay(city);
+        showFiveDay(city);
+        $("h3").removeClass("hide");
+        localStorage.setItem("cities", JSON.stringify(cities))
+        localStorage.setItem("last-city", JSON.stringify(city))
     }
-    // how to handle if they do not enter a city??
-    // if(city = undefined){
-    // var noResultsEl = $("<h3>") 
-    // noResultsEl.text("No results found")
-    // oneDayDiv.append(noResultsEl)
-    // } 
+
 });
 renderCities();
 
