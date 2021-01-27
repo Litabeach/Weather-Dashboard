@@ -32,8 +32,8 @@ function renderCities() {
 
 // function to show today's weather
 function showOneDay(city) {
-    // URL with API Key
-    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=ec56ab5d5bd61e4c7ba5abb45ce5cb1a";
+    // URL with API Key. The cors-anywhere.herokuapp allows this to work on gitHub pages
+    var queryURL = "https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=ec56ab5d5bd61e4c7ba5abb45ce5cb1a";
 
     $.ajax({
         url: queryURL,
@@ -64,7 +64,7 @@ function showOneDay(city) {
             var lat = response.coord.lat;
             var lon = response.coord.lon;
             //An AJAX call to pull the UV index using the lat and lon from 50 and 51
-            var queryURL = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=ec56ab5d5bd61e4c7ba5abb45ce5cb1a";
+            var queryURL = "https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=ec56ab5d5bd61e4c7ba5abb45ce5cb1a";
 
             $.ajax({
                 url: queryURL,
@@ -137,7 +137,7 @@ function showOneDay(city) {
 function showFiveDay(city) {
 
     // URL with API Key
-    var queryURL5 = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=ec56ab5d5bd61e4c7ba5abb45ce5cb1a";
+    var queryURL5 = "https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=ec56ab5d5bd61e4c7ba5abb45ce5cb1a";
 
     $.ajax({
         url: queryURL5,
